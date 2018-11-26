@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Chess</title>
 	<style>
-		html, body{width: 100%;height: 100%;}
+		html, body{width: 100%;height: 100%;margin: 0;padding: 0;}
 		canvas{position: absolute; transform: translate(-50%, -50%); left: 50%;top: 50%;}
 	</style>
 </head>
@@ -34,6 +34,7 @@
 			}
 			function drawPiece (){
 				image.onload= function (){
+
 					let ix= 0, iy= 100, cx= 0, cy= 0;
 	  				ctx.drawImage(this, ix, iy, 100, 100, cx, cy, 100, 100);
 	  				ix= 0, iy= 200, cx= 100, cy= 0;
@@ -87,9 +88,25 @@
 
 				}
 			}
+			function eventInit (){
+				canvas.addEventListener("click", function (e){
+					var x= e.pageX - this.offsetLeft;
+					var y= e.pageY - this.offsetTop;
+					console.log(y);
+					console.log(this.offsetTop);
+					console.log(e.pageY);
+					for(var p of paths){
+						if(ctx.isPointInPath(p, x, y)){
+							console.log(p);
+						}
+					}
+				});
+			}
 			function init (){
 				drawBoard();
 				drawPiece();
+				eventInit();
+				console.log(paths);
 			}
 			init();
 		})();

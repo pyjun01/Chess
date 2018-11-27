@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="js/chess.js"></script>
 	<title>Chess</title>
 	<style>
 		html, body{width: 100%;height: 100%;margin: 0;padding: 0;}
@@ -13,103 +14,10 @@
 
 	<canvas id="canvas" width="800" height="800"></canvas>
 	<script>
-		(function (){
-			const canvas= document.getElementById("canvas");
-			const ctx= canvas.getContext("2d");
-			const image= new Image();
-			image.src= 'chesspiece.png';
-			const paths= [];
-			function drawBoard (){
-				for(var i= 0; i< 8; i++) {
-					for(var j= 0; j< 8; j++){
-						let x= j*100, y= i*100;
-						let path= new Path2D();
-						path.rect(x, y, 100, 100);
-						paths.push(path);
-
-						ctx.fillStyle= (j+i)%2==0? "#D18B47": "#FFCE9E";
-						ctx.fill(path);
-					}
-				}
-			}
-			function drawPiece (){
-				image.onload= function (){
-
-					let ix= 0, iy= 100, cx= 0, cy= 0;
-	  				ctx.drawImage(this, ix, iy, 100, 100, cx, cy, 100, 100);
-	  				ix= 0, iy= 200, cx= 100, cy= 0;
-	  				ctx.drawImage(this, ix, iy, 100, 100, cx, cy, 100, 100);
-	  				ix= 200, iy= 100, cx= 200, cy= 0;
-	  				ctx.drawImage(this, ix, iy, 100, 100, cx, cy, 100, 100);
-
-	  				ix= 200, iy= 0, cx= 300, cy= 0;
-	  				ctx.drawImage(this, ix, iy, 100, 100, cx, cy, 100, 100);
-	  				ix= 0, iy= 0, cx= 400, cy= 0;
-	  				ctx.drawImage(this, ix, iy, 100, 100, cx, cy, 100, 100);
-
-	  				ix= 200, iy= 100, cx= 500, cy= 0;
-	  				ctx.drawImage(this, ix, iy, 100, 100, cx, cy, 100, 100);
-	  				ix= 0, iy= 200, cx= 600, cy= 0;
-	  				ctx.drawImage(this, ix, iy, 100, 100, cx, cy, 100, 100);
-	  				ix= 0, iy= 100, cx= 700, cy= 0;
-	  				ctx.drawImage(this, ix, iy, 100, 100, cx, cy, 100, 100);
-
-	  				ix= 200, iy= 200;
-	  				for(let i=0; i<8; i++){
-	  					cx= i*100, cy= 100;
-	  					ctx.drawImage(this, ix, iy, 100, 100, cx, cy, 100, 100);
-	  				}
-
-	  				ix= 100, iy= 100, cx= 0, cy= 700;
-	  				ctx.drawImage(this, ix, iy, 100, 100, cx, cy, 100, 100);
-	  				ix= 100, iy= 200, cx= 100, cy= 700;
-	  				ctx.drawImage(this, ix, iy, 100, 100, cx, cy, 100, 100);
-	  				ix= 300, iy= 100, cx= 200, cy= 700;
-	  				ctx.drawImage(this, ix, iy, 100, 100, cx, cy, 100, 100);
-
-	  				ix= 300, iy= 0, cx= 300, cy= 700;
-	  				ctx.drawImage(this, ix, iy, 100, 100, cx, cy, 100, 100);
-	  				ix= 100, iy= 0, cx= 400, cy= 700;
-	  				ctx.drawImage(this, ix, iy, 100, 100, cx, cy, 100, 100);
-
-	  				ix= 300, iy= 100, cx= 500, cy= 700;
-	  				ctx.drawImage(this, ix, iy, 100, 100, cx, cy, 100, 100);
-	  				ix= 100, iy= 200, cx= 600, cy= 700;
-	  				ctx.drawImage(this, ix, iy, 100, 100, cx, cy, 100, 100);
-	  				ix= 100, iy= 100, cx= 700, cy= 700;
-	  				ctx.drawImage(this, ix, iy, 100, 100, cx, cy, 100, 100);
-
-	  				ix= 300, iy= 200;
-	  				for(let i=0; i<8; i++){
-	  					cx= i*100, cy= 600;
-	  					ctx.drawImage(this, ix, iy, 100, 100, cx, cy, 100, 100);
-	  				}
-
-
-				}
-			}
-			function eventInit (){
-				canvas.addEventListener("click", function (e){
-					var x= e.pageX - this.offsetLeft;
-					var y= e.pageY - this.offsetTop;
-					console.log(y);
-					console.log(this.offsetTop);
-					console.log(e.pageY);
-					for(var p of paths){
-						if(ctx.isPointInPath(p, x, y)){
-							console.log(p);
-						}
-					}
-				});
-			}
-			function init (){
-				drawBoard();
-				drawPiece();
-				eventInit();
-				console.log(paths);
-			}
-			init();
-		})();
+		var chess;
+		window.onload= function (){
+			chess= new Chess("#canvas");
+		}
 	</script>
 </body>
 </html>

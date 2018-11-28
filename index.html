@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="js/chess.js"></script>
+	<title>Chess</title>
+	<style>
+		*{margin: 0;padding: 0;user-select: none;}
+		html, body{width: 100%;height: 100%;}
+		#ChessBoard{position: relative; width: 820px;height: 820px; transform: translate(-50%, -50%); left: 50%;top: 50%;}
+		#ChessBoard > #row{float: left;width: 20px;height: 100%;}
+		#ChessBoard > #row > div{width: 100%;height: 100px;line-height: 100px;text-align: center;}
+		#ChessBoard > #canvas{float: left;width: 800px;height: 800px;}
+
+		#ChessBoard > #column{float: left;width: 800px;height: 20px;}
+		#ChessBoard > #column > div{float: left;width: 100px;height: 20px;text-align: center;line-height: 20px;}
+
+		.mask{width: 801px;height: 801px;position: absolute;top: 0;background: #fff;display: flex;justify-content: center;align-items: center;left: 20px;}
+	</style>
+</head>
+<body>
+	<div id="ChessBoard">
+		<div id="row">
+			<div>8</div>
+			<div>7</div>
+			<div>6</div>
+			<div>5</div>
+			<div>4</div>
+			<div>3</div>
+			<div>2</div>
+			<div>1</div>
+		</div>
+		<canvas id="canvas" width="800" height="800"></canvas>
+		<div id="column">
+			<div>a</div>
+			<div>b</div>
+			<div>c</div>
+			<div>d</div>
+			<div>e</div>
+			<div>f</div>
+			<div>g</div>
+			<div>h</div>
+		</div>
+	</div>
+	<script>
+		var chess;
+		window.onload= function (){
+			chess= new Chess("#canvas");
+		}
+	</script>
+</body>
+</html>

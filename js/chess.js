@@ -10,7 +10,6 @@ function Chess(canvas){
 	this.paths= [];
 	this.image= new Image();
 
-
 	this.location={
 		B:{
 			Q:[200, 0, [this.pW*3, 0, 3, 1]],
@@ -419,7 +418,6 @@ Chess.prototype.First_Click= function (I, L, P, Cx, Cy){
 				}
 				break;
 			case "R":
-				console.log(Cx*8+Cy);
 				for(var i= Cx; i>=0;i--){//Up
 					if(i==Cx)continue;
 					if(this.L[i][Cy] == ""){
@@ -534,13 +532,187 @@ Chess.prototype.First_Click= function (I, L, P, Cx, Cy){
 				}
 				break;
 			case "B":
-				
+				for(var j=0; j<2; j++){
+					for(var i= 1; i<8;i++){//Right Bottom
+						var y= j==0? Cy+i: Cy-i;
+						if(this.L[Cx+i]!= undefined && this.L[Cx+i][y] != undefined){
+							if(this.L[Cx+i][y] == ""){
+								path= this.paths[(Cx+i)*8+y];
+								this.Cango.push(path);
+								this.ctx.fillStyle= (Cx+i+y)%2==0? "#533315": "#f4e4d4";
+								this.ctx.fill(path);
+							}else{
+								var for_target=this.L[Cx+i][y].split("@");
+								if(for_target[0]=="W"){
+									path= this.paths[(Cx+i)*8+y];
+									this.Cango.push(path);
+									this.ctx.fillStyle= "#f44";
+									this.ctx.fill(path);
+								}
+								break;
+							}
+						}
+					}
+					for(var i= 1; i<8;i++){//Right Bottom
+						var y= j==0? Cy+i: Cy-i;
+						if(this.L[Cx-i]!= undefined && this.L[Cx-i][y] != undefined){
+							if(this.L[Cx-i][y] == ""){
+								path= this.paths[(Cx-i)*8+y];
+								this.Cango.push(path);
+								this.ctx.fillStyle= (Cx-i+y)%2==0? "#533315": "#f4e4d4";
+								this.ctx.fill(path);
+							}else{
+								var for_target=this.L[Cx-i][y].split("@");
+								if(for_target[0]=="W"){
+									path= this.paths[(Cx-i)*8+y];
+									this.Cango.push(path);
+									this.ctx.fillStyle= "#f44";
+									this.ctx.fill(path);
+								}
+								break;
+							}
+						}
+					}
+				}
 				break;
 			case "K":
-				
+				for(var i=-1; i<2; i++){//-1 ~ 1
+					for(var j=-1; j<2; j++){
+						if(i==0 && j==0) continue;
+						if(this.L[Cx+i] != undefined && this.L[Cx+i][Cy+j] != undefined){
+							if(this.L[Cx+i][Cy+j] == ""){
+								var path= this.paths[P+(i*8)+j];
+								this.Cango.push(path);
+								this.ctx.fillStyle= (Cx+i+Cy+j)%2==0? "#533315": "#f4e4d4";
+								this.ctx.fill(path);
+							}else{
+								var tg= this.L[Cx+i][Cy+j].split("@");
+								if(tg[0]=="W"){
+									var path= this.paths[P+(i*8)+j];
+									this.Cango.push(path);
+									this.ctx.fillStyle= "#f44";
+									this.ctx.fill(path);
+								}
+							}
+						}
+					}
+				}
 				break;
 			case "Q":
-				
+				for(var j=0; j<2; j++){
+					for(var i= 1; i<8;i++){//Right Bottom
+						var y= j==0? Cy+i: Cy-i;
+						if(this.L[Cx+i]!= undefined && this.L[Cx+i][y] != undefined){
+							if(this.L[Cx+i][y] == ""){
+								path= this.paths[(Cx+i)*8+y];
+								this.Cango.push(path);
+								this.ctx.fillStyle= (Cx+i+y)%2==0? "#533315": "#f4e4d4";
+								this.ctx.fill(path);
+							}else{
+								var for_target=this.L[Cx+i][y].split("@");
+								if(for_target[0]=="W"){
+									path= this.paths[(Cx+i)*8+y];
+									this.Cango.push(path);
+									this.ctx.fillStyle= "#f44";
+									this.ctx.fill(path);
+								}
+								break;
+							}
+						}
+					}
+					for(var i= 1; i<8;i++){//Right Bottom
+						var y= j==0? Cy+i: Cy-i;
+						if(this.L[Cx-i]!= undefined && this.L[Cx-i][y] != undefined){
+							if(this.L[Cx-i][y] == ""){
+								path= this.paths[(Cx-i)*8+y];
+								this.Cango.push(path);
+								this.ctx.fillStyle= (Cx-i+y)%2==0? "#533315": "#f4e4d4";
+								this.ctx.fill(path);
+							}else{
+								var for_target=this.L[Cx-i][y].split("@");
+								if(for_target[0]=="W"){
+									path= this.paths[(Cx-i)*8+y];
+									this.Cango.push(path);
+									this.ctx.fillStyle= "#f44";
+									this.ctx.fill(path);
+								}
+								break;
+							}
+						}
+					}
+				}
+				for(var i= Cx; i>=0;i--){//Up
+					if(i==Cx)continue;
+					if(this.L[i][Cy] == ""){
+						path= this.paths[i*8+Cy];
+						this.Cango.push(path);
+						this.ctx.fillStyle= (i+Cy)%2==0? "#533315": "#f4e4d4";
+						this.ctx.fill(path);
+					}else{
+						var for_target=this.L[i][Cy].split("@");
+						if(for_target[0]=="W"){
+							path= this.paths[i*8+Cy];
+							this.Cango.push(path);
+							this.ctx.fillStyle= "#f44";
+							this.ctx.fill(path);
+						}
+						break;
+					}
+				}
+				for(var i= Cx; i<8;i++){//Down
+					if(i==Cx)continue;
+					if(this.L[i][Cy] == ""){
+						path= this.paths[i*8+Cy];
+						this.Cango.push(path);
+						this.ctx.fillStyle= (i+Cy)%2==0? "#533315": "#f4e4d4";
+						this.ctx.fill(path);
+					}else{
+						var for_target=this.L[i][Cy].split("@");
+						if(for_target[0]=="W"){
+							path= this.paths[i*8+Cy];
+							this.Cango.push(path);
+							this.ctx.fillStyle= "#f44";
+							this.ctx.fill(path);
+						}
+						break;
+					}
+				}
+				for(var i= Cy; i>=0;i--){//Left
+					if(i==Cy)continue;
+					if(this.L[Cx][i] == ""){
+						path= this.paths[Cx*8+i];
+						this.Cango.push(path);
+						this.ctx.fillStyle= (Cx+i)%2==0? "#533315": "#f4e4d4";
+						this.ctx.fill(path);
+					}else{
+						var for_target=this.L[Cx][i].split("@");
+						if(for_target[0]=="W"){
+							path= this.paths[Cx*8+i];
+							this.Cango.push(path);
+							this.ctx.fillStyle= "#f44";
+							this.ctx.fill(path);
+						}
+						break;
+					}
+				}
+				for(var i= Cy; i<8;i++){//Right
+					if(i==Cy)continue;
+					if(this.L[Cx][i] == ""){
+						path= this.paths[Cx*8+i];
+						this.Cango.push(path);
+						this.ctx.fillStyle= (Cx+i)%2==0? "#533315": "#f4e4d4";
+						this.ctx.fill(path);
+					}else{
+						var for_target=this.L[Cx][i].split("@");
+						if(for_target[0]=="W"){
+							path= this.paths[Cx*8+i];
+							this.Cango.push(path);
+							this.ctx.fillStyle= "#f44";
+							this.ctx.fill(path);
+						}
+						break;
+					}
+				}
 				break;
 		}
 		this.beforeXY=[Cx, Cy];//클릭한 좌표값 넣어줌
@@ -699,32 +871,187 @@ Chess.prototype.First_Click= function (I, L, P, Cx, Cy){
 				}
 				break;
 			case "B":
-				for(var i= 0; i<8;i++){//Up
-					if(this.L[Cx+i]!= undefined && this.L[Cx+i][Cy+i] != undefined){
-						if(this.L[Cx+i][Cy+i] == ""){
-							path= this.paths[(Cx+i)*8+Cy+i];
-							this.Cango.push(path);
-							this.ctx.fillStyle= (Cx+i+Cy+i)%2==0? "#533315": "#f4e4d4";
-							this.ctx.fill(path);
-						}else{
-							var for_target=this.L[i][Cy].split("@");
-							if(for_target[0]=="B"){
-								path= this.paths[i*8+Cy];
+				for(var j=0; j<2; j++){
+					for(var i= 1; i<8;i++){//Right Bottom
+						var y= j==0? Cy+i: Cy-i;
+						if(this.L[Cx+i]!= undefined && this.L[Cx+i][y] != undefined){
+							if(this.L[Cx+i][y] == ""){
+								path= this.paths[(Cx+i)*8+y];
 								this.Cango.push(path);
-								this.ctx.fillStyle= "#f44";
+								this.ctx.fillStyle= (Cx+i+y)%2==0? "#533315": "#f4e4d4";
 								this.ctx.fill(path);
+							}else{
+								var for_target=this.L[Cx+i][y].split("@");
+								if(for_target[0]=="B"){
+									path= this.paths[(Cx+i)*8+y];
+									this.Cango.push(path);
+									this.ctx.fillStyle= "#f44";
+									this.ctx.fill(path);
+								}
+								break;
 							}
-							break;
+						}
+					}
+					for(var i= 1; i<8;i++){//Right Bottom
+						var y= j==0? Cy+i: Cy-i;
+						if(this.L[Cx-i]!= undefined && this.L[Cx-i][y] != undefined){
+							if(this.L[Cx-i][y] == ""){
+								path= this.paths[(Cx-i)*8+y];
+								this.Cango.push(path);
+								this.ctx.fillStyle= (Cx-i+y)%2==0? "#533315": "#f4e4d4";
+								this.ctx.fill(path);
+							}else{
+								var for_target=this.L[Cx-i][y].split("@");
+								if(for_target[0]=="B"){
+									path= this.paths[(Cx-i)*8+y];
+									this.Cango.push(path);
+									this.ctx.fillStyle= "#f44";
+									this.ctx.fill(path);
+								}
+								break;
+							}
 						}
 					}
 				}
-				// this.L[Cx]
 				break;
 			case "K":
-				
+				for(var i=-1; i<2; i++){//-1 ~ 1
+					for(var j=-1; j<2; j++){
+						if(i==0 && j==0) continue;
+						if(this.L[Cx+i] != undefined && this.L[Cx+i][Cy+j] != undefined){
+							if(this.L[Cx+i][Cy+j] == ""){
+								var path= this.paths[P+(i*8)+j];
+								this.Cango.push(path);
+								this.ctx.fillStyle= (Cx+i+Cy+j)%2==0? "#533315": "#f4e4d4";
+								this.ctx.fill(path);
+							}else{
+								var tg= this.L[Cx+i][Cy+j].split("@");
+								if(tg[0]=="B"){
+									var path= this.paths[P+(i*8)+j];
+									this.Cango.push(path);
+									this.ctx.fillStyle= "#f44";
+									this.ctx.fill(path);
+								}
+							}
+						}
+					}
+				}
 				break;
 			case "Q":
-				
+				for(var j=0; j<2; j++){
+					for(var i= 1; i<8;i++){//Right Bottom
+						var y= j==0? Cy+i: Cy-i;
+						if(this.L[Cx+i]!= undefined && this.L[Cx+i][y] != undefined){
+							if(this.L[Cx+i][y] == ""){
+								path= this.paths[(Cx+i)*8+y];
+								this.Cango.push(path);
+								this.ctx.fillStyle= (Cx+i+y)%2==0? "#533315": "#f4e4d4";
+								this.ctx.fill(path);
+							}else{
+								var for_target=this.L[Cx+i][y].split("@");
+								if(for_target[0]=="B"){
+									path= this.paths[(Cx+i)*8+y];
+									this.Cango.push(path);
+									this.ctx.fillStyle= "#f44";
+									this.ctx.fill(path);
+								}
+								break;
+							}
+						}
+					}
+					for(var i= 1; i<8;i++){//Right Bottom
+						var y= j==0? Cy+i: Cy-i;
+						if(this.L[Cx-i]!= undefined && this.L[Cx-i][y] != undefined){
+							if(this.L[Cx-i][y] == ""){
+								path= this.paths[(Cx-i)*8+y];
+								this.Cango.push(path);
+								this.ctx.fillStyle= (Cx-i+y)%2==0? "#533315": "#f4e4d4";
+								this.ctx.fill(path);
+							}else{
+								var for_target=this.L[Cx-i][y].split("@");
+								if(for_target[0]=="B"){
+									path= this.paths[(Cx-i)*8+y];
+									this.Cango.push(path);
+									this.ctx.fillStyle= "#f44";
+									this.ctx.fill(path);
+								}
+								break;
+							}
+						}
+					}
+				}
+				for(var i= Cx; i>=0;i--){//Up
+					if(i==Cx)continue;
+					if(this.L[i][Cy] == ""){
+						path= this.paths[i*8+Cy];
+						this.Cango.push(path);
+						this.ctx.fillStyle= (i+Cy)%2==0? "#533315": "#f4e4d4";
+						this.ctx.fill(path);
+					}else{
+						var for_target=this.L[i][Cy].split("@");
+						if(for_target[0]=="B"){
+							path= this.paths[i*8+Cy];
+							this.Cango.push(path);
+							this.ctx.fillStyle= "#f44";
+							this.ctx.fill(path);
+						}
+						break;
+					}
+				}
+				for(var i= Cx; i<8;i++){//Down
+					if(i==Cx)continue;
+					if(this.L[i][Cy] == ""){
+						path= this.paths[i*8+Cy];
+						this.Cango.push(path);
+						this.ctx.fillStyle= (i+Cy)%2==0? "#533315": "#f4e4d4";
+						this.ctx.fill(path);
+					}else{
+						var for_target=this.L[i][Cy].split("@");
+						if(for_target[0]=="B"){
+							path= this.paths[i*8+Cy];
+							this.Cango.push(path);
+							this.ctx.fillStyle= "#f44";
+							this.ctx.fill(path);
+						}
+						break;
+					}
+				}
+				for(var i= Cy; i>=0;i--){//Left
+					if(i==Cy)continue;
+					if(this.L[Cx][i] == ""){
+						path= this.paths[Cx*8+i];
+						this.Cango.push(path);
+						this.ctx.fillStyle= (Cx+i)%2==0? "#533315": "#f4e4d4";
+						this.ctx.fill(path);
+					}else{
+						var for_target=this.L[Cx][i].split("@");
+						if(for_target[0]=="B"){
+							path= this.paths[Cx*8+i];
+							this.Cango.push(path);
+							this.ctx.fillStyle= "#f44";
+							this.ctx.fill(path);
+						}
+						break;
+					}
+				}
+				for(var i= Cy; i<8;i++){//Right
+					if(i==Cy)continue;
+					if(this.L[Cx][i] == ""){
+						path= this.paths[Cx*8+i];
+						this.Cango.push(path);
+						this.ctx.fillStyle= (Cx+i)%2==0? "#533315": "#f4e4d4";
+						this.ctx.fill(path);
+					}else{
+						var for_target=this.L[Cx][i].split("@");
+						if(for_target[0]=="B"){
+							path= this.paths[Cx*8+i];
+							this.Cango.push(path);
+							this.ctx.fillStyle= "#f44";
+							this.ctx.fill(path);
+						}
+						break;
+					}
+				}
 				break;
 		}
 		this.beforeXY=[Cx, Cy];//클릭한 좌표값 넣어줌

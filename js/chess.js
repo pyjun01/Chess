@@ -86,7 +86,6 @@ function Chess(canvas){
 	var self= this;
 	this.Movement= {
 		P: function (Color, Cx, Cy, P, isFirst){
-			console.log(isFirst);
 			var isEmpty=false;
 			var X= Color? Cx+1: Cx-1;
 			var pathidx= Color? P+8: P-8;
@@ -136,8 +135,6 @@ function Chess(canvas){
 					self.ctx.fill(path);
 				}else{
 					var for_target=self.L[i][Cy].split("@");
-					console.log(for_target[0]);
-					console.log(Color? "W": "B");
 					if(for_target[0] === (Color? "W": "B")){
 						path= self.paths[i*8+Cy];
 						self.Cango.push(path);
@@ -319,18 +316,102 @@ function Chess(canvas){
 Chess.prototype.init= function (){
 	var self= this;
 	this.image.onload= function (){
+		if(document.querySelector(".load") != null)
+			document.querySelector(".load").className= "";
+		document.querySelector("#DisplayBoard").innerText= "White Turn";
 		self.DrawBoard();
 		self.DrawPiece();
 		self.eventInit();
 	}
 	this.image.src= 'chesspiece.png';
 };
+Chess.prototype.reset = function() {
+	this.Turn= false;
+	this.onClicked= false;
+	this.beforeXY= [];
+	this.Canmove= [];
+	this.Cango= [];
+	this.location={
+		B:{
+			Q:[200, 0, [this.pW*3, 0, 3, 1]],
+			K:[0, 0, [this.pW*4, 0, 4, 1]],
+			R:[
+				0, 100,
+				[0, 0, 0, 1],
+				[this.pW*7, 0, 7, 1]
+			],
+			B:[200, 100, 
+				[this.pW*2, 0, 2, 1],
+				[this.pW*5, 0, 5, 1]
+			],
+			Kn:[0, 200, 
+				[this.pW*1, 0, 1, 1],
+				[this.pW*6, 0, 6, 1],
+			],
+			P:[200, 200, 
+				[0, this.pH*1, 8, 1],
+				[this.pW*1, this.pH*1, 9, 1],
+				[this.pW*2, this.pH*1, 10, 1],
+				[this.pW*3, this.pH*1, 11, 1],
+				[this.pW*4, this.pH*1, 12, 1],
+				[this.pW*5, this.pH*1, 13, 1],
+				[this.pW*6, this.pH*1, 14, 1],
+				[this.pW*7, this.pH*1, 15, 1],
+			],
+		},
+		W:{
+			Q:[300, 0, [this.pW*3, this.pH*7, 59, 1]],
+			K:[100, 0, [this.pW*4, this.pH*7, 60, 1]],
+			R:[
+				100, 100,
+				[0, this.pH*7, 56, 1],
+				[this.pW*7, this.pH*7, 63, 1]
+			],
+			B:[300, 100, 
+				[this.pW*2, this.pH*7, 58, 1],
+				[this.pW*5, this.pH*7, 61, 1]
+			],
+			Kn:[100, 200, 
+				[this.pW*1, this.pH*7, 57, 1],
+				[this.pW*6, this.pH*7, 62, 1],
+			],
+			P:[300, 200, 
+				[0, this.pH*6, 48, 1],
+				[this.pW*1, this.pH*6, 49, 1],
+				[this.pW*2, this.pH*6, 50, 1],
+				[this.pW*3, this.pH*6, 51, 1],
+				[this.pW*4, this.pH*6, 52, 1],
+				[this.pW*5, this.pH*6, 53, 1],
+				[this.pW*6, this.pH*6, 54, 1],
+				[this.pW*7, this.pH*6, 55, 1],
+			],
+		}
+	}
+	this.L=[
+		["B@R@1", "B@Kn@1", "B@B@1", "B@Q@1", "B@K@1", "B@B@2", "B@Kn@2", "B@R@2"],
+		["B@P@1", "B@P@2", "B@P@3", "B@P@4", "B@P@5", "B@P@6", "B@P@7", "B@P@8"],
+		["", "", "", "", "", "", "", ""],
+		["", "", "", "", "", "", "", ""],
+		["", "", "", "", "", "", "", ""],
+		["", "", "", "", "", "", "", ""],
+		["W@P@1", "W@P@2", "W@P@3", "W@P@4", "W@P@5", "W@P@6", "W@P@7", "W@P@8"],
+		["W@R@1", "W@Kn@1", "W@B@1", "W@Q@1", "W@K@1", "W@B@2", "W@Kn@2", "W@R@2"]
+	];
+	this.Display();
+};
 Chess.prototype.End = function(isBlackWin) {
 	var B= document.getElementById("ChessBoard");
 	var mask= document.createElement("div");
 	mask.classList.add("mask");
 	mask.innerText= isBlackWin? "BlackWin": "WhiteWin";
+	mask.innerHTML+= "<button id='re'>re?</button>";
+	document.querySelector("#DisplayBoard").innerText= "";
 	B.prepend(mask);
+	var self= this;
+	document.querySelector("#re").addEventListener("click", function (){
+		mask.remove();
+		self.reset();
+	});
 };
 Chess.prototype.DrawBoard= function (){
 	for(var i= 0; i< 8; i++) {
@@ -387,11 +468,13 @@ Chess.prototype.Display = function() {
 	this.onClicked= false;
 	if(this.location["B"]["K"][2][3]!=1){
 		this.End(false);
+		return false;
 	}
 	if(this.location["W"]["K"][2][3]!=1){
 		this.End(true);
+		return false;
 	}
-
+	document.querySelector("#DisplayBoard").innerText= this.Turn? "Black Turn": "White Turn";
 	for(var idx in this.paths){//draw Board
 		var path= this.paths[idx];
 		var x= Math.floor(idx/8);
